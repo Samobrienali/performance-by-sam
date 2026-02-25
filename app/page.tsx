@@ -15,7 +15,12 @@ const TEAL_DARK = "#008A8A";
 const TEAL_LIGHT = "#E0F7F7";
 
 // ─── Calorie / Macro Calculation Logic ───────────────────────────────────────
-function calcBMR(sex, weight, height, age) {
+function calcBMR(
+  sex: "male" | "female",
+  weight: number,
+  height: number,
+  age: number
+): number {
   if (sex === "male") return 10 * weight + 6.25 * height - 5 * age + 5;
   return 10 * weight + 6.25 * height - 5 * age - 161;
 }
@@ -39,11 +44,18 @@ const PROTEIN_PER_KG = {
   maintenance: 1.8,
   "muscle-gain": 2.0,
 };
-function calcMacros(formData: FormData) {
+function calcMacros(formData: {
+  sex: "male" | "female";
+  weight: number;
+  height: number;
+  age: number;
+  goal: string;
+  activity: keyof typeof ACTIVITY_MULTIPLIERS;
+}): { protein: number; fat: number; carbs: number } {
   const { sex, weight, height, age, goal, activity } = formData;
   const bmr = calcBMR(sex, weight, height, age);
   const tdee = bmr * ACTIVITY_MULTIPLIERS[activity];
-  const targetCals = Math.round(tdee * GOAL_ADJUSTMENTS[goal]);
+
 
   const proteinG = Math.round(weight * PROTEIN_PER_KG[goal]);
   const fatG = Math.round(weight * 0.8);
