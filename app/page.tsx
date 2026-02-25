@@ -1,19 +1,25 @@
 "use client";
+type FormData = {
+  sex: "male" | "female";
+  weight: number;
+  height: number;
+  age: number;
+  goal: "fat_loss" | "maintenance" | "muscle_gain";
+  activity: "sedentary" | "light" | "moderate" | "active" | "very_active";
+};
 import { useState, useEffect, useRef } from "react";
 
 // ─── Color & Design System ───────────────────────────────────────────────────
 const TEAL = "#00B3B3";
 const TEAL_DARK = "#008A8A";
 const TEAL_LIGHT = "#E0F7F7";
-function calcBMR(
-  sex: "male" | "female",
-  weight: number,
-  height: number,
-  age: number
-): number {
+
+// ─── Calorie / Macro Calculation Logic ───────────────────────────────────────
+function calcBMR(sex, weight, height, age) {
   if (sex === "male") return 10 * weight + 6.25 * height - 5 * age + 5;
   return 10 * weight + 6.25 * height - 5 * age - 161;
 }
+
 const ACTIVITY_MULTIPLIERS = {
   sedentary: 1.2,
   light: 1.375,
@@ -33,8 +39,7 @@ const PROTEIN_PER_KG = {
   maintenance: 1.8,
   "muscle-gain": 2.0,
 };
-
-function calcMacros(formData) {
+function calcMacros(formData: FormData) {
   const { sex, weight, height, age, goal, activity } = formData;
   const bmr = calcBMR(sex, weight, height, age);
   const tdee = bmr * ACTIVITY_MULTIPLIERS[activity];
