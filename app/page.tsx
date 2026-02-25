@@ -5,13 +5,15 @@ import { useState, useEffect, useRef } from "react";
 const TEAL = "#00B3B3";
 const TEAL_DARK = "#008A8A";
 const TEAL_LIGHT = "#E0F7F7";
-
-// ─── Calorie / Macro Calculation Logic ───────────────────────────────────────
-function calcBMR(sex, weight, height, age) {
+function calcBMR(
+  sex: "male" | "female",
+  weight: number,
+  height: number,
+  age: number
+): number {
   if (sex === "male") return 10 * weight + 6.25 * height - 5 * age + 5;
   return 10 * weight + 6.25 * height - 5 * age - 161;
 }
-
 const ACTIVITY_MULTIPLIERS = {
   sedentary: 1.2,
   light: 1.375,
