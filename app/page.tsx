@@ -4,8 +4,8 @@ type FormData = {
   weight: number;
   height: number;
   age: number;
-  goal: "fat_loss" | "maintenance" | "muscle_gain";
-  activity: "sedentary" | "light" | "moderate" | "active" | "very_active";
+  goal: "fat-loss" | "maintenance" | "muscle-gain";
+  activity: "sedentary" | "light" | "moderate" | "active" | "athlete";
 };
 import { useState, useEffect, useRef } from "react";
 
@@ -55,7 +55,7 @@ function calcMacros(formData: {
   const { sex, weight, height, age, goal, activity } = formData;
   const bmr = calcBMR(sex, weight, height, age);
   const tdee = bmr * ACTIVITY_MULTIPLIERS[activity];
-
+const targetCals = Math.round(tdee * GOAL_ADJUSTMENTS[goal]);
 
   const proteinG = Math.round(weight * PROTEIN_PER_KG[goal]);
   const fatG = Math.round(weight * 0.8);
